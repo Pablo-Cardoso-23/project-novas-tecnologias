@@ -2,13 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
 </head>
     <body>
 
         <h1>Dashboard - P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
+        <h2>Estatísticas de Ocorrências</h2>
+        <canvas id="graficoOcorrencias"></canvas>
 
-        <p>Área para visualização de dados</p>
+        <script>
+
+            fetch('/dados_ocorrencias').then(response => response.json()).then(data => {
+
+                console.log("Dados recebidos:",data);
+
+                const ctx = document.getElementById('graficoOcorrencias').getContext('2d');
+                const labels = data.map(item => item.br);
+                const valores = data.map(item => item.quantidade);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Número de Acidentes Por BR',
+                            data: valores,
+                            backgroundColor: 'rgb(75, 192, 192, 0.5)',
+                        }]
+                    }
+                });
+            })
+            .catch(err => console.error("Erro ao buscar dados:", error));
+        </script>
 
         <a href="/login">Sair</a>
 

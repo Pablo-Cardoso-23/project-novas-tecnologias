@@ -3,12 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>P4 SECURITY: RAPID RESPONSE SYSTEM</title>
+
+    <style>
+        body {
+
+            background-color: #01101f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+
+          text-align: center;
+        }
+
+        .logo {
+
+            width: 350px;
+            margin-bottom: 20px;
+        }
+
+        .titulo {
+
+            color: yellow;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input {
+
+            width: 250px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid yellow;
+            border-radius: 5px;
+        }
+
+        button {
+
+            background-color: yellow;
+            color: #0A192F;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 255px;
+        }
+
+        button:hover {
+
+            background-color: #FFD700;
+        }
+    </style>
 </head>
     <body>
 
-        <div class="login-container">
-
-            <h2>Login</h2>
+        <div class="container">
+            
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+            <h1 class="titulo">P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
 
             <form action="/login" method="POST">
                 <input type="text" name="username" placeholder="Matrícula" required>
