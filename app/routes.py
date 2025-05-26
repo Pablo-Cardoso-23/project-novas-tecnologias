@@ -4,6 +4,10 @@ from flask import Blueprint, jsonify, render_template, request, redirect, url_fo
 
 main_bp = Blueprint('main_bp', __name__)
 
+@main_bp.route('/', methods=['GET'])
+def barra():
+    return redirect('/login')
+
 @main_bp.route('/status', methods=['GET'])
 def status():
 
