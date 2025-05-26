@@ -23,7 +23,8 @@ def login():
 
         print(f'username: {username}, password: {password}')
 
-        usuarios = {"pablo": "123456"}
+        usuarios = {"pablo": "123456",
+                    "pedro": "123456"}
 
         if username in usuarios and usuarios[username] == password:
 
@@ -73,3 +74,8 @@ def dados_ocorrencias_api():
    except Exception as e:
 
        return jsonify({'error': f"Erro ao carregar os dados de ocorrências: {str(e)}"})
+
+
+@main_bp.route('/mapa')
+def mapa():
+    return render_template('mapa.html')
