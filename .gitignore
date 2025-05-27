@@ -1,1 +1,1 @@
-./app/*.env
+app/secrets.env
