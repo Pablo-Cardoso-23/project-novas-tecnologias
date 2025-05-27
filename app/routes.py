@@ -78,4 +78,5 @@ def dados_ocorrencias_api():
 
 @main_bp.route('/mapa')
 def mapa():
-    return render_template('mapa.html')
+    google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+    return render_template("mapa.html", google_api_key=google_api_key)

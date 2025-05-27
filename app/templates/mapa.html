@@ -4,18 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa</title>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=KEY-API&callback=console.debug&libraries=maps,marker&v=beta">
-    </script>
+    <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=Key&callback=console.debug&libraries=maps,marker&v=beta">
+    </script> -->
 </head>
 <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      gmp-map {
-        height: 50%;
-        width: 50%;
-      }
       body {
-
             background-color: #01101f;
             display: flex;
             justify-content: center;
@@ -24,17 +17,112 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
-
-      /* .mapa {
-        height: 100%;
-      } */
-    </style>
+      .navbar {
+            background-color: yellow;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .navbar .logo {
+            color: #01101f;
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        .navbar .menu {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar a {
+            background-color: #01101f;
+            color: yellow;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+        .navbar a:hover {
+            background-color: FD700;
+        }
+        #map {
+          height: 80vh;
+          width: 60%;
+          margin-top: 70px; /* para não ficar escondido atrás da navbar */
+        }
+</style>
 <body>
-    
-    <gmp-map center="-15.867515905354344,-48.03072512123349" zoom="14" map-id="DEMO_MAP_ID">
-        <gmp-advanced-marker position="-15.867515905354344,-48.03072512123349" title="My location"></gmp-advanced-marker>
-    </gmp-map>
-    
+    <div class="navbar">
+
+        <div class="logo">P4 SECURITY</div>
+        <div class="menu">
+
+            <a href="/dashboard">Dashboard</a>
+            <a href="/mapa">Mapa</a>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: -15.793889, lng: -47.882778 },
+          zoom: 11,
+        });
+
+        const icons = {
+          viatura: {
+            url: "/static/images/carro-de-policia.png",
+            scaledSize: new google.maps.Size(40, 40),
+          },
+          pontoCritico: {
+            url: "/static/images/critico.png",
+            scaledSize: new google.maps.Size(30, 30),
+          },
+        };
+
+        const viaturas = [
+          { lat: -15.750, lng: -47.900 },
+          { lat: -15.810, lng: -47.870 },
+          { lat: -15.770, lng: -47.950 },
+        ];
+
+        const pontosCriticos = [
+          { lat: -15.793, lng: -47.882 },
+          { lat: -15.790, lng: -47.880 },
+          { lat: -15.792, lng: -47.885 },
+        ];
+
+        viaturas.forEach((pos) => {
+          new google.maps.Marker({
+            position: pos,
+            map,
+            icon: icons.viatura,
+            title: "Viatura",
+          });
+        });
+
+        pontosCriticos.forEach((pos) => {
+          new google.maps.Marker({
+            position: pos,
+            map,
+            icon: icons.pontoCritico,
+            title: "Ponto Crítico",
+          });
+        });
+      }
+    </script>
+    <!-- API do Google Maps -->
+    <script async
+      src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
     
 </body>
 </html>
