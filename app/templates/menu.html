@@ -7,7 +7,7 @@
 
         body {
 
-            background-color: #01101f;
+            background-color: #01101F;
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
 
         .navbar {
 
-            background-color: yellow;
+            background-color: #B88D01;
             padding: 15px;
             display: flex;
             justify-content: space-between;
@@ -28,7 +28,7 @@
 
         .navbar .logo {
 
-            color: #01101f;
+            color: #06192E;
             font-size: 24px;
             font-weight: bold;
             margin-left: 15px;
@@ -43,7 +43,7 @@
 
         .navbar a {
 
-            background-color: #01101f;
+            background-color: #01101F;
             color: yellow;
             padding: 10px 15px;
             text-decoration: none;
@@ -59,15 +59,66 @@
 
         .container {
 
+            display: flex;
+            align-items: center;
+            flex-direction: column;
             text-align: center;
-            padding-top: 80px;
+            margin-top: 100px
         }
 
         .conteudo {
 
             color: white;
             font-size: 20px;
+            text-align: center;
+            margin-bottom: 230px;
         }
+
+        .menu-layout {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px
+        }
+
+        .imagem-lateral {
+
+            width: 350px;
+            border-radius; 10px;
+        }
+
+        .acesso-rapido {
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: center;
+
+        }
+
+        .content-box {
+
+            background-color: #06192E;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            width: 180px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .content-box:hover {
+
+            background-color: FD700;
+        }
+
 
     </style>
 </head>
@@ -86,6 +137,26 @@
     <div class="container">
 
         <p class="conteudo">Bem-vindo ao sistema P4 SECURITY! Seu sistema de gerenciamento de trânsito.</p>
+
+        <div class="menu-layout">
+            <div class="layout">
+
+                <img src="{{ url_for('static', filename='images/inspetor.png') }}" alt="Inspetora" class="imagem-lateral">
+
+            </div>
+
+
+        <div class="acesso-rapido">
+
+            <div class="content-box" onclick="window.location.href='/mapa'">ACESSAR MAPA</div>
+            <div class="content-box" onclick="window.location.href='/dashboard'">ACESSAR DASHBOARD</div>
+            <div class="content-box" onclick="window.location.href='/registarocorrencia'">REGISTRAR OCORRÊNCIA</div>
+            <div class="content-box">ÁREA DE MAIS TENSÃO</div>
+
+        </div>
+
+      </div>
+
     </div>
 </body>
 </html>

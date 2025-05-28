@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P4 SECURITY: RAPID RESPONSE SYSTEM</title>
+
+    <style>
+        body {
+
+            background-color: #01101f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+
+          text-align: center;
+        }
+
+        .logo {
+
+            width: 350px;
+            margin-bottom: 20px;
+        }
+
+        .titulo {
+
+            color: yellow;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input {
+
+            width: 250px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid yellow;
+            border-radius: 5px;
+        }
+
+        button {
+
+            background-color: yellow;
+            color: #0A192F;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 255px;
+        }
+
+        button:hover {
+
+            background-color: #FFD700;
+        }
+    </style>
+</head>
+    <body>
+
+        <div class="container">
+
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+            <h1 class="titulo">P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
+
+            <form action="/registrarocorrencia" method="POST">
+                <input type="date" name="data_inversa" placeholder="Data" required>
+                <select class="form-select" name="dias" id="dias">
+
+                            <option value="segunda">Segunda</option>
+                            <option value="terca">Terça</option>
+                            <option value="quarta">Quarta</option>
+                            <option value="quinta">Quinta</option>
+                            <option value="sexta">Sexta</option>
+                            <option value="sabado">Sábado</option>
+                            <option value="domingo">Domingo</option>
+                </select>
+
+                <input type="time" class="form-control" name="horario" id="horario" required>
+
+                <input type="text" name="uf" placeholder="UF" required>
+
+                <select class="form-select" name="br" id="br">
+
+                            <option value="dez">10</option>
+                            <option value="vinte">20</option>
+                            <option value="quarenta">40</option>
+                            <option value="sessenta">60</option>
+                            <option value="setenta">70</option>
+                            <option value="oitenta">80</option>
+                            <option value="dois_cinco_um">251</option>
+                </select>
+
+                <input type="number" class="form-control" name="km" placeholder="KM" required>
+
+                <select class="form-select" name="br" id="municipio">
+
+                            <option value="brasilia">BRASILIA</option>
+
+                </select>
+
+                <select class="form-select" name="causa_acidente" id="causa_acidente">
+
+                            <option value="falta_atencao">Falta de Atenção à Condução</option>
+                            <option value="pista_escorregadia">Pista Escorregadia</option>
+                            <option value="sinalizacao">Sinalização da via insuficiente ou inadequada</option>
+                            <option value="defeito_mecanico">Defeito Mecânico no Veículo</option>
+                            <option value="ingestao_alcool">Ingestão de Álcool</option>
+                            <option value="falta_atencao_pedestre">Falta de Atenção do Pedestre</option>
+                            <option value="velocidade_incompativel">Velocidade Incompatível</option>
+                </select>
+
+                <button type="submit">Registrar</button>
+            </form>
+
+        </div>
+
+    </body>
+</html>

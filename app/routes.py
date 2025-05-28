@@ -1,8 +1,12 @@
 import pandas as pd
 import os
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
+from dotenv import load_dotenv
 
 main_bp = Blueprint('main_bp', __name__)
+env_path = os.path.join(os.path.dirname(__file__), 'keys', 'API_MAPS.env')
+load_dotenv(env_path)
+api_key_maps = os.getenv('API_KEY')
 
 @main_bp.route('/', methods=['GET'])
 def barra():
@@ -49,6 +53,11 @@ def dashboard():
 
     return render_template('dashboard.html')
 
+@main_bp.route('/registarocorrencia')
+def registar_ocorrencia():
+
+    return render_template('ocorrencia.html')
+
 @main_bp.route('/dados_ocorrencias')
 def dados_ocorrencias_api():
 
@@ -79,4 +88,4 @@ def dados_ocorrencias_api():
 @main_bp.route('/mapa')
 def mapa():
     google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-    return render_template("mapa.html", google_api_key=google_api_key)
+    return render_template("mapa.html", api_key_maps=api_key_maps)
