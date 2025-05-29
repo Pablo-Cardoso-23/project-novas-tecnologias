@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa</title>
-    <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=Key&callback=console.debug&libraries=maps,marker&v=beta">
-    </script> -->
 </head>
 <style>
       body {
@@ -18,7 +16,7 @@
             font-family: Arial, sans-serif;
         }
       .navbar {
-            background-color: yellow;
+            background-color: #B88D01;
             padding: 15px;
             display: flex;
             justify-content: space-between;
@@ -73,8 +71,8 @@
     <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: -15.793889, lng: -47.882778 },
-          zoom: 11,
+          center: { lat: -15.864946240888553, lng: -48.030177931043816 },
+          zoom: 13,
         });
 
         const icons = {
@@ -89,16 +87,20 @@
         };
 
         const viaturas = [
-          { lat: -15.750, lng: -47.900 },
-          { lat: -15.810, lng: -47.870 },
-          { lat: -15.770, lng: -47.950 },
+          { lat: 	-15.84218076636792, lng: -48.00162881748427 },
+          { lat: -15.830710621899204, lng: -48.04068247748962},
+          { lat: 	-15.876980350125391, lng: -48.02209594958901 },
         ];
 
         const pontosCriticos = [
-          { lat: -15.793, lng: -47.882 },
-          { lat: -15.790, lng: -47.880 },
-          { lat: -15.792, lng: -47.885 },
+          { lat: -15.831792471402624, lng: -48.05021348593103 },
+          { lat: -15.84218076636792, lng: -48.00162881748427 },
+          { lat: -15.87577406585772, lng: -47.99001052512398 },
         ];
+
+
+
+
 
         viaturas.forEach((pos) => {
           new google.maps.Marker({
@@ -106,6 +108,7 @@
             map,
             icon: icons.viatura,
             title: "Viatura",
+            // zIndex: 2
           });
         });
 
@@ -115,6 +118,7 @@
             map,
             icon: icons.pontoCritico,
             title: "Ponto Crítico",
+            // zIndex: 1
           });
         });
       }

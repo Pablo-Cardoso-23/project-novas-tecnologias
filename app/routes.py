@@ -4,9 +4,7 @@ from flask import Blueprint, jsonify, render_template, request, redirect, url_fo
 from dotenv import load_dotenv
 
 main_bp = Blueprint('main_bp', __name__)
-env_path = os.path.join(os.path.dirname(__file__), 'keys', 'API_MAPS.env')
-load_dotenv(env_path)
-api_key_maps = os.getenv('API_KEY')
+load_dotenv(dotenv_path="./app/secrets.env")
 
 @main_bp.route('/', methods=['GET'])
 def barra():
@@ -88,4 +86,4 @@ def dados_ocorrencias_api():
 @main_bp.route('/mapa')
 def mapa():
     google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-    return render_template("mapa.html", api_key_maps=api_key_maps)
+    return render_template("mapa.html", google_api_key =google_api_key)

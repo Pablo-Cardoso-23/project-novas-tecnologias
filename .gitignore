@@ -1,1 +1,3 @@
 app/keys/.env
+/app/secrets.env
+app/templates/mapa-1.html
