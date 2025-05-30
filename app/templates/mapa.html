@@ -49,10 +49,26 @@
         .navbar a:hover {
             background-color: FD700;
         }
+        .container {
+          display: flex;
+          width: 90%;
+          height: calc(100vh - 60px); /* ajustado se tiver navbar fixa */
+        }
         #map {
           height: 80vh;
-          width: 60%;
+          width: 50%;
           margin-top: 70px; /* para não ficar escondido atrás da navbar */
+          border-radius: 10px;
+        }
+
+        .dados {
+          
+          height: 80vh;
+          width: 40%;
+          background-color: #06192E;
+          border-radius: 10px;
+          margin-left: 150px;
+          margin-top: 70px;
         }
 </style>
 <body>
@@ -65,9 +81,12 @@
             <a href="/mapa">Mapa</a>
         </div>
     </div>
+    <div class="container">
+      <div id="map"></div>
+      <div class="dados">
 
-    <div id="map"></div>
-
+      </div>
+    </div>
     <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -98,17 +117,13 @@
           { lat: -15.87577406585772, lng: -47.99001052512398 },
         ];
 
-
-
-
-
         viaturas.forEach((pos) => {
           new google.maps.Marker({
             position: pos,
             map,
             icon: icons.viatura,
             title: "Viatura",
-            // zIndex: 2
+            
           });
         });
 
@@ -118,7 +133,6 @@
             map,
             icon: icons.pontoCritico,
             title: "Ponto Crítico",
-            // zIndex: 1
           });
         });
       }
