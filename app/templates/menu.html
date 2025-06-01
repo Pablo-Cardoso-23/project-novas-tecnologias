@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>P4 SECURITY - MENU</title>
+
     <style>
 
         body {
@@ -114,6 +115,13 @@
             text-align: center;
         }
 
+        .content-box img {
+
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+        }
+
         .content-box:hover {
 
             background-color: FD700;
@@ -148,9 +156,15 @@
 
         <div class="acesso-rapido">
 
-            <div class="content-box" onclick="window.location.href='/mapa'">ACESSAR MAPA</div>
-            <div class="content-box" onclick="window.location.href='/dashboard'">ACESSAR DASHBOARD</div>
-            <div class="content-box" onclick="window.location.href='/registarocorrencia'">REGISTRAR OCORRÊNCIA</div>
+            <div class="content-box" onclick="window.location.href='/mapa'">
+                <img src="{{ url_for('static', filename='images/icon-map.png') }}"> ACESSAR MAPA
+            </div>
+            <div class="content-box" onclick="window.location.href='/dashboard'">
+                <img src="{{ url_for('static', filename='images/icon-dashboard.png') }}"> ACESSAR DASHBOARD
+            </div>
+            <div class="content-box" onclick="window.location.href='/registarocorrencia'">
+                <img src="{{ url_for('static', filename='images/icon-ocorrencia.png') }}">REGISTRAR OCORRÊNCIA
+            </div>
             <div class="content-box">ÁREA DE MAIS TENSÃO</div>
 
         </div>

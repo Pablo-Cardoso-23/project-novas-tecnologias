@@ -68,20 +68,32 @@ def dados_ocorrencias_api():
            return jsonify({"error": f"Arquivo não encontrado: {caminho_csv}"})
 
        df = pd.read_csv(caminho_csv, sep=';')
-       df_br = df[['br']]
+       df = df.fillna("null")
 
-       df_agrupado = df[df['br'] > 0].groupby('br').size().reset_index(name='quantidade')
+       br_filtro = request.args.get('br', '')
+       tipo_acidente = request.args.get('tipo_acidente', '')
+       ano_filtro = request.args.get('ano', '')
 
+       if tipo_acidente:
 
-       #dados_ocorrencias = df_br.to_dict(orient='records')
-       dados_ocorrencias = df_agrupado.to_dict(orient='records')
+           df = df[df['tipo_acidente'].str.contains(tipo_acidente, case=False, na=False)]
 
-       return jsonify(dados_ocorrencias)
+       if br_filtro:
+
+           df = df[df['br'].astype(str) == br_filtro]
+
+       if ano_filtro:
+
+           df = df[df['ano'].astype(str) == ano_filtro]
+
+       df_agrupado = df.groupby('br').agg({'id': 'count'}).reset_index()
+       df_agrupado.rename(columns={'id': 'quantidade'}, inplace=True)
+
+       return jsonify(df_agrupado.to_dict(orient='records'))
 
    except Exception as e:
 
        return jsonify({'error': f"Erro ao carregar os dados de ocorrências: {str(e)}"})
-
 
 @main_bp.route('/mapa')
 def mapa():

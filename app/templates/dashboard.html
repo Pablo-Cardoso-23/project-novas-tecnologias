@@ -3,14 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/dashboard.js"></script>
     <title>Dashboard</title>
+
+    <style>
+
+        body {
+
+            background-color: #01101F;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #navbar {
+
+            background-color: #B88D01;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #nav-title {
+
+            font-size: 24px;
+            color: #01101F;
+            text-decoration: none;
+            position: absolute;
+            margin-top: -10px;
+            left: 20px;
+        }
+
+        #nav-title:hover {
+
+            color: white;
+        }
+
+        #navbar ul {
+
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        #navbar ul li {
+
+            display: inline;
+        }
+
+        #navbar ul li a {
+
+            text-decoration: none;
+            color: #01101F;
+            font-size: 18px;
+            padding: 10px 15px
+        }
+
+        #navbar ul li a:hover {
+
+            background-color: #01101F;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #dashboard-container {
+
+            width: 90%;
+            margin: auto;
+            padding: 40px 20px;
+            background-color: #001833;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+            margin-top: 80px;
+        }
+
+        #graficoOcorrencias {
+
+            display: block;
+            margin: 20px auto;
+            max-width: 95%;
+            height: 550px;
+            background-color: #001833;
+            border-radius: 10px;
+        }
+
+        #filtros {
+
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+        }
+
+        select, button {
+
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+
+            background-color: #B88D01;
+            color: #01101F;
+            cursor: pointer;
+        }
+
+        button:hover {
+
+            background-color: #FFD700;
+        }
+
+    </style>
+
 </head>
     <body>
 
+        <nav id="navbar">
+            <h1><a href="/menu" id="nav-title">P4 SECURITY</a></h1>
+            <ul>
+
+                <li><a href="/menu">Início</a></li>
+                <li><a href="/mapa">Mapa</a></li>
+                <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
+
+            </ul>
+
+        </nav>
+
+        <div id="dashboard-container">
+
         <h1>Dashboard - P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
         <h2>Estatísticas de Ocorrências</h2>
-        <canvas id="graficoOcorrencias"></canvas>
 
+        <form id="filtros">
+
+                <label for="br">Rodovia (BR):</label>
+                <select id="br">
+
+                    <option value="">Geral</option>
+                    <option value=10>10</option>
+                    <option value=20>20</option>
+                    <option value=40>40</option>
+                    <option value=60>60</option>
+                    <option value=70>70</option>
+                    <option value=80>80</option>
+                    <option value=251>251</option>
+
+                </select>
+
+                <label for="ano">Ano:</label>
+                <select id="ano">
+
+                    <option value="">Geral</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+
+                </select>
+
+                <label for="tipo_acidente">Tipo de Acidente</label>
+                <select id="tipo_acidente">
+
+                    <option value="">Geral</option>
+                    <option value="Colisão">Colisão lateral</option>
+                    <option value="Capotamento">Tombamento</option>
+
+                </select>
+
+                <button type="button" onclick="filtrarDados()">Filtrar</button>
+
+            </form>
+
+            <canvas id="graficoOcorrencias"></canvas>
+        </div>
         <script>
 
             fetch('/dados_ocorrencias').then(response => response.json()).then(data => {
@@ -33,10 +216,8 @@
                     }
                 });
             })
-            .catch(err => console.error("Erro ao buscar dados:", error));
+            .catch(err => console.error("Erro ao buscar dados:", err));
         </script>
-
-        <a href="/login">Sair</a>
 
     </body>
 </html>
