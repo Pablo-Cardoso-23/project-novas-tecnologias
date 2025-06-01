@@ -51,7 +51,7 @@ def dashboard():
 
     return render_template('dashboard.html')
 
-@main_bp.route('/registarocorrencia')
+@main_bp.route('/registrarocorrencia')
 def registar_ocorrencia():
 
     return render_template('ocorrencia.html')
