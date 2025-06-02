@@ -87,61 +87,48 @@
 
       </div>
     </div>
-    <script>
-      function initMap() {
+  <script>
+    function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: -15.864946240888553, lng: -48.030177931043816 },
-          zoom: 13,
+          zoom: 11
         });
 
         const icons = {
-          viatura: {
-            url: "/static/images/carro-de-policia.png",
-            scaledSize: new google.maps.Size(40, 40),
-          },
           pontoCritico: {
-            url: "/static/images/critico.png",
-            scaledSize: new google.maps.Size(30, 30),
+            url: '{{ url_for("static", filename="images/critico.png") }}',
+            scaledSize: new google.maps.Size(30, 30)
           },
+          viatura: {
+            url: '{{ url_for("static", filename="images/viatura.png") }}',
+            scaledSize: new google.maps.Size(35, 35)
+          }
         };
-
-        const viaturas = [
-          { lat: 	-15.84218076636792, lng: -48.00162881748427 },
-          { lat: -15.830710621899204, lng: -48.04068247748962},
-          { lat: 	-15.876980350125391, lng: -48.02209594958901 },
-        ];
-
-        const pontosCriticos = [
-          { lat: -15.831792471402624, lng: -48.05021348593103 },
-          { lat: -15.84218076636792, lng: -48.00162881748427 },
-          { lat: -15.87577406585772, lng: -47.99001052512398 },
-        ];
-
-        viaturas.forEach((pos) => {
-          new google.maps.Marker({
-            position: pos,
-            map,
-            icon: icons.viatura,
-            title: "Viatura",
-            
+        const pontosCriticos = {{ pontos_criticos | tojson | safe }};
+        console.log("MAPA.HTML: 'pontosCriticos' recebidos:", JSON.stringify(pontosCriticos, null, 2));
+        if (pontosCriticos && Array.isArray(pontosCriticos) && pontosCriticos.length > 0) {
+          pontosCriticos.forEach((pos, index) => {
+            if (pos && typeof pos.lat === 'number' && typeof pos.lng === 'number' && !isNaN(pos.lat) && !isNaN(pos.lng)) {
+              new google.maps.Marker({
+                position: { lat: pos.lat, lng: pos.lng },
+                map: map,
+                icon: icons.pontoCritico,
+                title: `Ponto Crítico ${index + 1}`,
+                zIndex: 1
+              });
+            } else {
+              console.warn("MAPA.HTML: Item inválido ou coordenada NaN em 'pontosCriticos':", pos);
+            }
           });
-        });
-
-        pontosCriticos.forEach((pos) => {
-          new google.maps.Marker({
-            position: pos,
-            map,
-            icon: icons.pontoCritico,
-            title: "Ponto Crítico",
-          });
-        });
+        } else {
+          console.log("MAPA.HTML: Nenhum ponto crítico para exibir ou 'pontosCriticos' não é um array válido ou está vazio.");
+        }
       }
-    </script>
-    <!-- API do Google Maps -->
-    <script async
-      src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
-    </script>
-    
+  </script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap&libraries=maps,marker&v=beta">
+  </script>
 </body>
 </html>
 
