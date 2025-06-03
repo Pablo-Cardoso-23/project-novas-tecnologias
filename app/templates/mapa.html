@@ -14,54 +14,81 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-        }
-      .navbar {
-            background-color: #B88D01;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+      }
+
+      #navbar {
+
+            background-color: #ffc107;
+            padding: 15px 30px;
             position: fixed;
             top: 0;
             width: 100%;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        }
-        .navbar .logo {
-            color: #01101f;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+      }
+
+      #nav-title {
+
             font-size: 24px;
-            font-weight: bold;
-            margin-left: 15px;
-        }
-        .navbar .menu {
-            flex-grow: 1;
+            color: #01101F;
+            text-decoration: none;
+            position: absolute;
+            margin-top: -10px;
+            margin-left: 20px;
+            left: 20px;
+      }
+
+      #nav-title:hover {
+
+            color: white;
+      }
+
+      #navbar ul {
+
+            list-style-type: none;
             display: flex;
             justify-content: center;
-        }
-        .navbar a {
-            background-color: #01101f;
-            color: yellow;
-            padding: 10px 15px;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+      }
+
+      #navbar ul li {
+
+            display: inline;
+      }
+
+      #navbar ul li a {
+
             text-decoration: none;
+            color: #01101F;
+            font-size: 18px;
+            padding: 10px 15px
+      }
+
+      #navbar ul li a:hover {
+
+            background-color: #01101F;
+            color: white;
             border-radius: 5px;
-            font-size: 16px;
-            margin-left: 5px;
-        }
-        .navbar a:hover {
-            background-color: FD700;
-        }
-        .container {
+      }
+
+      .container {
           display: flex;
           width: 90%;
           height: calc(100vh - 60px); /* ajustado se tiver navbar fixa */
-        }
-        #map {
+      }
+
+      #map {
           height: 80vh;
           width: 50%;
           margin-top: 70px; /* para não ficar escondido atrás da navbar */
           border-radius: 10px;
-        }
+      }
 
-        .dados {
+      .dados {
           
           height: 80vh;
           width: 40%;
@@ -69,18 +96,21 @@
           border-radius: 10px;
           margin-left: 150px;
           margin-top: 70px;
-        }
+      }
+
 </style>
 <body>
-    <div class="navbar">
+    <nav id="navbar">
+            <h1><a href="/menu" id="nav-title">P4 SECURITY</a></h1>
+            <ul>
 
-        <div class="logo">P4 SECURITY</div>
-        <div class="menu">
+                <li><a href="/menu">Início</a></li>
+                <li><a href="/mapa">Mapa</a></li>
+                <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
 
-            <a href="/dashboard">Dashboard</a>
-            <a href="/mapa">Mapa</a>
-        </div>
-    </div>
+            </ul>
+
+        </nav>
     <div class="container">
       <div id="map"></div>
       <div class="dados">

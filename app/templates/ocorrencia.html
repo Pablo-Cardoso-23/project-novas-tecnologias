@@ -1,127 +1,401 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>P4 SECURITY: RAPID RESPONSE SYSTEM</title>
 
     <style>
+
         body {
 
-            background-color: #01101f;
+            background-color: #01101F;
+        }
+
+        label {
+
+            color: white;
+        }
+
+        h1 {
+
+            color: #ffc107
+        }
+
+        #navbar {
+
+            background-color: #ffc107;
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #nav-title {
+
+            font-size: 24px;
+            color: #01101F;
+            text-decoration: none;
+            position: absolute;
+            margin-top: -10px;
+            left: 20px;
+        }
+
+        #nav-title:hover {
+
+            color: white;
+        }
+
+        #navbar ul {
+
+            list-style-type: none;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            gap: 20px;
+            padding: 0;
             margin: 0;
-            font-family: Arial, sans-serif;
         }
 
-        .container {
+        #navbar ul li {
 
-          text-align: center;
+            display: inline;
         }
 
-        .logo {
+        #navbar ul li a {
 
-            width: 350px;
-            margin-bottom: 20px;
+            text-decoration: none;
+            color: #01101F;
+            font-size: 18px;
+            padding: 10px 15px
         }
 
-        .titulo {
+        #navbar ul li a:hover {
 
-            color: yellow;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        form {
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input {
-
-            width: 250px;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid yellow;
+            background-color: #01101F;
+            color: white;
             border-radius: 5px;
-        }
-
-        button {
-
-            background-color: yellow;
-            color: #0A192F;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 255px;
-        }
-
-        button:hover {
-
-            background-color: #FFD700;
         }
     </style>
 </head>
     <body>
 
-        <div class="container">
+    <nav id="navbar">
+            <h1><a href="/menu" id="nav-title">P4 SECURITY</a></h1>
+            <ul>
 
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
-            <h1 class="titulo">P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
+                <li><a href="/menu">Início</a></li>
+                <li><a href="/mapa">Mapa</a></li>
+                <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
 
-            <form action="/registrarocorrencia" method="POST">
-                <input type="date" name="data_inversa" placeholder="Data" required>
-                <select class="form-select" name="dias" id="dias">
+            </ul>
 
-                            <option value="segunda">Segunda</option>
-                            <option value="terca">Terça</option>
-                            <option value="quarta">Quarta</option>
-                            <option value="quinta">Quinta</option>
-                            <option value="sexta">Sexta</option>
-                            <option value="sabado">Sábado</option>
-                            <option value="domingo">Domingo</option>
-                </select>
+        </nav>
 
-                <input type="time" class="form-control" name="horario" id="horario" required>
+    <div class="container">
 
-                <input type="text" name="uf" placeholder="UF" required>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="rounded mx-auto d-block">
 
-                <select class="form-select" name="br" id="br">
+            <div class="col-12 text-center mt-3">
+                <h1 class="titulo">P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
+            </div>
 
-                            <option value="dez">10</option>
-                            <option value="vinte">20</option>
-                            <option value="quarenta">40</option>
-                            <option value="sessenta">60</option>
-                            <option value="setenta">70</option>
-                            <option value="oitenta">80</option>
-                            <option value="dois_cinco_um">251</option>
-                </select>
+            <form action="/registrarocorrencia" id="ocorrencia-form" method="POST">
+                <div class="row mt-3">
 
-                <input type="number" class="form-control" name="km" placeholder="KM" required>
+                    <div class="col-6 mt-1">
+                        <label for="data_inversa" class="form-label">DATA DO ACIDENTE:</label>
+                        <input type="date" class="form-control" id="data_inversa" name="data_inversa" placeholder="Data" required>
+                    </div>
 
-                <select class="form-select" name="br" id="municipio">
+                    <div class="col-6 mt-1">
+                        <label for="dias" class="form-label">DIA DA SEMANA:</label>
+                        <select class="form-select" name="dias" id="dias">
 
-                            <option value="brasilia">BRASILIA</option>
+                                    <option value="segunda">Segunda</option>
+                                    <option value="terca">Terça</option>
+                                    <option value="quarta">Quarta</option>
+                                    <option value="quinta">Quinta</option>
+                                    <option value="sexta">Sexta</option>
+                                    <option value="sabado">Sábado</option>
+                                    <option value="domingo">Domingo</option>
+                        </select>
 
-                </select>
+                    </div>
 
-                <select class="form-select" name="causa_acidente" id="causa_acidente">
+                    <div class="col-6 mt-1">
 
-                            <option value="falta_atencao">Falta de Atenção à Condução</option>
-                            <option value="pista_escorregadia">Pista Escorregadia</option>
-                            <option value="sinalizacao">Sinalização da via insuficiente ou inadequada</option>
-                            <option value="defeito_mecanico">Defeito Mecânico no Veículo</option>
-                            <option value="ingestao_alcool">Ingestão de Álcool</option>
-                            <option value="falta_atencao_pedestre">Falta de Atenção do Pedestre</option>
-                            <option value="velocidade_incompativel">Velocidade Incompatível</option>
-                </select>
+                        <label for="horario" class="form-label">HORÁRIO DO ACIDENTE:</label>
+                        <input type="time" class="form-control" name="horario" id="horario" required>
+                    </div>
 
-                <button type="submit">Registrar</button>
+                    <div class="col-6 mt-1">
+
+                        <label for="uf" class="form-label">UF:</label>
+                        <input type="text" class="form-control" name="uf" id="uf" placeholder="UF" required>
+
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="br" class="form-label">BR:</label>
+                        <select class="form-select" name="br" id="br">
+
+                                    <option value="dez">10</option>
+                                    <option value="vinte">20</option>
+                                    <option value="quarenta">40</option>
+                                    <option value="sessenta">60</option>
+                                    <option value="setenta">70</option>
+                                    <option value="oitenta">80</option>
+                                    <option value="dois_cinco_um">251</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+                        <label for="km" class="form-label">VELOCIDADE:</label>
+                        <input type="number" class="form-control" name="km" id="km" placeholder="KM" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+                        <label for="municipio" class="form-label">MUNICÍPIO:</label>
+                        <select class="form-select" name="br" id="municipio">
+
+                                    <option value="brasilia">BRASILIA</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="causa_acidente" class="form-label">CAUSA DO ACIDENTE:</label>
+                        <select class="form-select" name="causa_acidente" id="causa_acidente">
+
+                                    <option value="falta_atencao">Falta de Atenção à Condução</option>
+                                    <option value="pista_escorregadia">Pista Escorregadia</option>
+                                    <option value="sinalizacao">Sinalização da via insuficiente ou inadequada</option>
+                                    <option value="defeito_mecanico">Defeito Mecânico no Veículo</option>
+                                    <option value="ingestao_alcool">Ingestão de Álcool</option>
+                                    <option value="falta_atencao_pedestre">Falta de Atenção do Pedestre</option>
+                                    <option value="velocidade_incompativel">Velocidade Incompatível</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="tipo_acidente" class="form-label">TIPO DE ACIDENTE:</label>
+                        <select class="form-select" name="tipo_acidente" id="tipo_acidente">
+
+                                    <option value="colisao_lateral">Colisão lateral</option>
+                                    <option value="colisao_traseira">Colisão traseira</option>
+                                    <option value="colisao_frontal">Colisão frontal</option>
+                                    <option value="colisao_objeto_estatico">Colisão com objeto estático</option>
+                                    <option value="saida_leito_carrocavel">Saída de leito carroçável</option>
+                                    <option value="atropelamento_pedestre">Atropelamento de Pedestre</option>
+                                    <option value="tombamento">Tombamento</option>
+                                    <option value="capotamento">Capotamento</option>
+                                    <option value="atropelamento_animal">Atropelamento de Animal</option>
+                                    <option value="queda_ocupante">Queda de ocupante de veículo</option>
+                                    <option value="derramamento_carga">Derramamento de carga</option>
+                                    <option value="incendio">Incêndio</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="classificacao_acidente" class="form-label">CLASSIFICAÇÃO DO ACIDENTE:</label>
+                        <select class="form-select" name="classificacao_acidente" id="classificacao_acidente">
+
+                                    <option value="sem_vitimas">Sem Vítimas</option>
+                                    <option value="com_vitimas_feridas">Com Vítimas Feridas</option>
+                                    <option value="com_vitimas_fatais">Com Vítimas Fatais</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="fase_dia" class="form-label">FASE DO DIA:</label>
+                        <select class="form-select" name="fase_dia" id="fase_dia">
+
+                                    <option value="pleno_dia">Pleno dia</option>
+                                    <option value="anoitecer">Anoitecer</option>
+                                    <option value="plena_noite">Plena Noite</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="sentido_via" class="form-label">SENTIDO DA VIA:</label>
+                        <select class="form-select" name="sentido_via" id="sentido_via">
+
+                                    <option value="crescente">Crescente</option>
+                                    <option value="decrescente">Decrescente</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="condicao_metereologica" class="form-label">CONDIÇÃO METEOROLÓGICA:</label>
+                        <select class="form-select" name="condicao_meteorologica" id="condicao_metereologica">
+
+                                    <option value="ceu_claro">Céu Claro</option>
+                                    <option value="nublado">Nublado</option>
+                                    <option value="sol">Sol</option>
+                                    <option value="chuva">Chuva</option>
+                                    <option value="garoa_chuvisco">Garoa/Chuvisco</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="tipo_pista" class="form-label">TIPO DE PISTA:</label>
+                         <select class="form-select" name="tipo_pista" id="tipo_pista">
+
+                                    <option value="simples">Simples</option>
+                                    <option value="dupla">Dupla</option>
+                                    <option value="multipla">Múltipla</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="tracado_via" class="form-label">TRAÇADO DA VIA:</label>
+                        <select class="form-select" name="tracado_via" id="tracado_via">
+
+                                    <option value="declive">Declive</option>
+                                    <option value="reta_declive">Reta;Declive</option>
+                                    <option value="aclive">Aclive</option>
+                                    <option value="reta_aclive">Reta;Aclive</option>
+                                    <option value="reta">Reta</option>
+                                    <option value="reta_i_v_r">Reta;Interseção;de Vias;Rotatória</option>
+                                    <option value="retorno_regulamentado">Retorno Regulamentado</option>
+                                    <option value="intersecao_vias">Interseção de Vias</option>
+                                    <option value="rotatoria">Rotatória</option>
+                                    <option value="viaduto_curva">Viaduto;Curva</option>
+                                    <option value="declive_reta">Declive;Reta</option>
+                                    <option value="curva_aclive">Curva;Aclive</option>
+                                    <option value="reta_intersecao_vias">Reta;Interseção de Vias</option>
+                                    <option value="reta_aclive_intersecao_vias">Reta;Aclive;Interseção de Vias</option>
+                                    <option value="curva_ponte_declive">Curva;Ponte;Declive</option>
+                                    <option value="curva_declive_obras">Curva;Declive;Em Obras</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="uso_solo" class="form-label">USO DO SOLO:</label>
+                        <select class="form-select" name="uso_solo" id="uso_solo">
+
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="col-6 mt-1">
+
+                        <label for="pessoas" class="form-label">NÚMERO DE PESSOAS:</label>
+                        <input type="number" class="form-control" name="pessoas" id="pessoas" placeholder="Pessoas" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="mortos" class="form-label">NÚMERO DE MORTOS:</label>
+                        <input type="number" class="form-control" name="mortos" id="mortos" placeholder="Mortos" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="feridos_leves" class="form-label">NÚMERO DE FERIDOS LEVES:</label>
+                        <input type="number" class="form-control" name="feridos_leves" id="feridos_leves" placeholder="Feridos Leves" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+                        <label for="feridos_graves" class="form-label">NÚMERO DE FERIDOS GRAVES:</label>
+                        <input type="number" class="form-control" name="feridos_graves" id="feridos_graves" placeholder="Feridos Graves" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="ilesos" class="form-label">NÚMERO DE ILESOS:</label>
+                        <input type="number" class="form-control" name="ilesos" id="ilesos" placeholder="Ilesos" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="ignorados" class="form-label">NÚMERO DE IGNORADOS:</label>
+                        <input type="number" class="form-control" name="ignorados" id="ignorados" placeholder="Ignorados" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="feridos" class="form-label">NÚMERO DE FERIDOS:</label>
+                        <input type="number" class="form-control" name="feridos" id="feridos" placeholder="Feridos" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="veiculos" class="form-label">NÚMERO DE VEÍCULOS:</label>
+                        <input type="number" class="form-control" name="veiculos" id="veiculos" placeholder="Veículos" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="latitude" class="form-label">LATITUDE:</label>
+                        <input type="number" class="form-control" name="latitude" id="latitude" placeholder="Latitude" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="longitude" class="form-label">LONGITUDE:</label>
+                        <input type="number" class="form-control" name="longitude" id="longitude" placeholder="Logitude" required>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="regional" class="form-label">REGIONAL:</label>
+                        <select class="form-select" name="regional" id="regional">
+
+                                    <option value="sprf_df">SPRF-DF</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="upo" class="form-label">NÚMERO DE PESSOAS:</label>
+                        <select class="form-select" name="uop" id="upo">
+
+                                    <option value="upo_01_01">UOP01-DEL01-DF</option>
+                                    <option value="upo_01_02">UOP01-DEL02-DF</option>
+                                    <option value="upo_01_03">UOP01-DEL03-DF</option>
+                                    <option value="upo_02_03">UOP02-DEL03-DF</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-1">
+
+                        <label for="ano" class="form-label">ANO DE REGISTRO:</label>
+                        <input type="number" class="form-control" name="ano" id="ano" placeholder="Ano" required>
+                    </div>
+
+                    <div class="col-12 mt-3 mb-3">
+
+                        <button type="submit" class="btn btn-warning w-100">Registrar</button>
+                    </div>
+
+                </div>
             </form>
 
         </div>
