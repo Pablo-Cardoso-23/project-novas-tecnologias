@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
 from dotenv import load_dotenv
+from app.controllers import gerar_pontos_criticos
 
 main_bp = Blueprint('main_bp', __name__)
 load_dotenv(dotenv_path="./app/secrets.env")
@@ -98,4 +99,30 @@ def dados_ocorrencias_api():
 @main_bp.route('/mapa')
 def mapa():
     google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-    return render_template("mapa.html", google_api_key = google_api_key)
+    if not google_api_key:
+        print("ROUTES.PY: ALERTA CRÍTICO! Maps_API_KEY não foi encontrada no ambiente.")
+        google_api_key = ""
+
+    caminho_base_app = os.path.dirname(os.path.abspath(__file__))
+    caminho_csv = os.path.join(caminho_base_app, "data", "ocorrenciasdf.csv")
+
+    lista_de_pontos_criticos = []
+    if os.path.exists(caminho_csv):
+        try:
+            lista_de_pontos_criticos = gerar_pontos_criticos(caminho_csv)
+            if lista_de_pontos_criticos is None:
+                print("ROUTES.PY: ALERTA! gerar_pontos_criticos retornou None. Usando lista vazia.")
+                lista_de_pontos_criticos = []
+        except Exception as e:
+            print(f"ROUTES.PY: ERRO EXCEPCIONAL ao chamar gerar_pontos_criticos: {e}")
+            import traceback
+            traceback.print_exc()
+            lista_de_pontos_criticos = [] 
+    else:
+        print(f"ROUTES.PY: ALERTA! Arquivo CSV não encontrado em '{caminho_csv}'. 'pontos_criticos' será uma lista vazia.")
+
+    return render_template(
+        "mapa.html",
+        pontos_criticos=lista_de_pontos_criticos,
+        google_api_key=google_api_key
+    )
