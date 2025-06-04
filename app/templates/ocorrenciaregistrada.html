@@ -98,49 +98,35 @@
             margin-top: 20px
         }
 
-        .imagem-lateral {
+        .imagem {
 
             width: 250px;
             border-radius: 10px;
+            margin: auto;
         }
 
-        .acesso-rapido {
+        h2 {
 
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            text-align: center;
-
+            color#ffc107;
+            font-size: 24px;
+            margin: 0;
         }
 
-        .content-box {
+        button {
 
-            background-color: #06192E;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 18px;
-            width: 180px;
+            padding: 10px 20px;
+            border:  none;
+            background-color: #ffc107;
+            border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            font-size: 16px;
         }
 
-        .content-box img {
+        button a {
 
-            width: 60px;
-            height: 60px;
-            margin-right: 10px;
+            text-decoration: none;
+            color: #01101F;
         }
-
-        .content-box:hover {
-
-            background-color: FD700;
-        }
-
 
     </style>
 </head>
@@ -161,33 +147,18 @@
 
     <div class="container">
 
-        <p class="conteudo">Bem-vindo ao sistema P4 SECURITY! Seu sistema de gerenciamento de trânsito.</p>
+        <p class="conteudo">Ocorrência foi encaminhada para o setor de análises!</p>
 
         <div class="menu-layout">
-            <div class="layout">
 
-                <img src="{{ url_for('static', filename='images/inspetor.png') }}" alt="Inspetora" class="imagem-lateral">
-
-            </div>
+            <h2>OCORRÊNCIA ENCAMINHADA!</h2>
+            <img src="{{ url_for('static', filename='images/inspetor-ocorrencia.png') }}" alt="Inspetor-registrando-ocorrencia" class="imagem">
 
 
-        <div class="acesso-rapido">
-
-            <div class="content-box" onclick="window.location.href='/mapa'">
-                <img src="{{ url_for('static', filename='images/icon-map.png') }}"> ACESSAR MAPA
-            </div>
-            <div class="content-box" onclick="window.location.href='/dashboard'">
-                <img src="{{ url_for('static', filename='images/icon-dashboard.png') }}"> ACESSAR DASHBOARD
-            </div>
-            <div class="content-box" onclick="window.location.href='/registrarocorrencia'">
-                <img src="{{ url_for('static', filename='images/icon-ocorrencia.png') }}">REGISTRAR OCORRÊNCIA
-            </div>
-            <div class="content-box">ÁREA DE MAIS TENSÃO</div>
-
+            <button>
+                <a href="/menu">Voltar ao Menu</a>
+            </button>
         </div>
-
-      </div>
-
     </div>
 </body>
 </html>

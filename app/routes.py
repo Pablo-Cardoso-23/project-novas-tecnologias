@@ -1,8 +1,12 @@
+import logging
+
 import pandas as pd
 import os
 from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
 from dotenv import load_dotenv
 from app.controllers import gerar_pontos_criticos
+from app.config import get_db_connection
+from datetime import datetime
 
 main_bp = Blueprint('main_bp', __name__)
 load_dotenv(dotenv_path="./app/secrets.env")
@@ -52,10 +56,96 @@ def dashboard():
 
     return render_template('dashboard.html')
 
-@main_bp.route('/registrarocorrencia')
-def registar_ocorrencia():
+logging.basicConfig(level=logging.DEBUG)
 
-    return render_template('ocorrencia.html')
+@main_bp.route('/registrarocorrencia', methods=['GET', 'POST'])
+def registrar_ocorrencia():
+
+    br_maping = {
+
+        "dez": 10,
+        "vinte": 20,
+        "quarenta": 40,
+        "sessenta": 60,
+        "setenta": 70,
+        "oitenta": 80,
+        "dois_cinco_um": 251
+
+    }
+
+    if request.method == 'GET':
+
+        return render_template('ocorrencia.html')
+
+    try:
+
+        horario = request.form['horario'] + ":00"
+        br_str = request.form['br']
+        br_numeric = br_maping.get(br_str, 0)
+        latitude = float(request.form['latitude'].replace(",", "."))
+        longitude = float(request.form['longitude'].replace(",", "."))
+
+        data_form = (
+
+            request.form['data_inversa'],
+            request.form['dias'],
+            horario,
+            request.form['uf'],
+            br_numeric,
+            request.form['km'],
+            request.form['municipio'],
+            request.form['causa_acidente'],
+            request.form['tipo_acidente'],
+            request.form['classificacao_acidente'],
+            request.form['fase_dia'],
+            request.form['sentido_via'],
+            request.form['condicao_metereologica'],
+            request.form['tipo_pista'],
+            request.form['tracado_via'],
+            request.form['uso_solo'],
+            request.form['pessoas'],
+            request.form['mortos'],
+            request.form['feridos_leves'],
+            request.form['feridos_graves'],
+            request.form['ilesos'],
+            request.form['ignorados'],
+            request.form['feridos'],
+            request.form['veiculos'],
+            latitude,
+            longitude,
+            request.form['regional'],
+            request.form['delegacia'],
+            request.form['uop'],
+            request.form['ano']
+
+        )
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+
+                   INSERT INTO ocorrencias (
+                       data_inversa, dia_semana, horario, uf, br, km, municipio,
+                       causa_acidente, tipo_acidente, classificacao_acidente, fase_dia, sentido_via,
+                       condicao_metereologica, tipo_pista, tracado_via, uso_solo, pessoas, mortos,
+                       feridos_leves, feridos_graves, ilesos, ignorados, feridos, veiculos,
+                       latitude, longitude, regional, delegacia, uop, ano
+                   ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+               """, data_form)
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return render_template('ocorrenciaregistrada.html')
+        #return jsonify({"message": "Registro de ocorrência realizado com sucesso!"})
+
+    except Exception as e:
+
+        logging.error(f"Erro ao registrar ocorrência: {str(e)}")
+        return jsonify({"error": f"Erro ao registrar ocorrência: {str(e)}"})
+
+
 
 @main_bp.route('/dados_ocorrencias')
 def dados_ocorrencias_api():

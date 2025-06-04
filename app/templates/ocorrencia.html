@@ -90,6 +90,7 @@
 
                 <li><a href="/menu">Início</a></li>
                 <li><a href="/mapa">Mapa</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
 
             </ul>
@@ -104,7 +105,7 @@
                 <h1 class="titulo">P4 SECURITY: RAPID RESPONSE SYSTEM</h1>
             </div>
 
-            <form action="/registrarocorrencia" id="ocorrencia-form" method="POST">
+            <form action="/registrarocorrencia" method="POST" enctype="application/x-www-form-urlencoded">
                 <div class="row mt-3">
 
                     <div class="col-6 mt-1">
@@ -162,7 +163,7 @@
 
                     <div class="col-6 mt-1">
                         <label for="municipio" class="form-label">MUNICÍPIO:</label>
-                        <select class="form-select" name="br" id="municipio">
+                        <select class="form-select" name="municipio" id="municipio">
 
                                     <option value="brasilia">BRASILIA</option>
 
@@ -242,7 +243,7 @@
                     <div class="col-6 mt-1">
 
                         <label for="condicao_metereologica" class="form-label">CONDIÇÃO METEOROLÓGICA:</label>
-                        <select class="form-select" name="condicao_meteorologica" id="condicao_metereologica">
+                        <select class="form-select" name="condicao_metereologica" id="condicao_metereologica">
 
                                     <option value="ceu_claro">Céu Claro</option>
                                     <option value="nublado">Nublado</option>
@@ -352,13 +353,13 @@
                     <div class="col-6 mt-1">
 
                         <label for="latitude" class="form-label">LATITUDE:</label>
-                        <input type="number" class="form-control" name="latitude" id="latitude" placeholder="Latitude" required>
+                        <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Latitude" required>
                     </div>
 
                     <div class="col-6 mt-1">
 
                         <label for="longitude" class="form-label">LONGITUDE:</label>
-                        <input type="number" class="form-control" name="longitude" id="longitude" placeholder="Logitude" required>
+                        <input type="text" class="form-control" name="longitude" id="longitude" placeholder="Logitude" required>
                     </div>
 
                     <div class="col-6 mt-1">
@@ -373,13 +374,19 @@
 
                     <div class="col-6 mt-1">
 
-                        <label for="upo" class="form-label">NÚMERO DE PESSOAS:</label>
-                        <select class="form-select" name="uop" id="upo">
+                        <label for="delegacia" class="form-label">DELEGACIA:</label>
+                        <input type="text" class="form-control" name="delegacia" id="delegacia" placeholder="Delegacia" required>
+                    </div>
 
-                                    <option value="upo_01_01">UOP01-DEL01-DF</option>
-                                    <option value="upo_01_02">UOP01-DEL02-DF</option>
-                                    <option value="upo_01_03">UOP01-DEL03-DF</option>
-                                    <option value="upo_02_03">UOP02-DEL03-DF</option>
+                    <div class="col-6 mt-1">
+
+                        <label for="uop" class="form-label">UPO:</label>
+                        <select class="form-select" name="uop" id="uop">
+
+                                    <option value="upo_01_01">UPO01-DEL01-DF</option>
+                                    <option value="upo_01_02">UPO01-DEL02-DF</option>
+                                    <option value="upo_01_03">UPO01-DEL03-DF</option>
+                                    <option value="upo_02_03">UPO02-DEL03-DF</option>
 
                         </select>
                     </div>

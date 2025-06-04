@@ -1,7 +1,8 @@
 from app import create_app
+from routes import main_bp
 from dotenv import load_dotenv
 
-load_dotenv("/app/secrets.env")
+load_dotenv("secrets.env")
 app = create_app()
 
 if __name__ == '__main__':
