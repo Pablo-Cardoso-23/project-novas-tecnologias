@@ -77,18 +77,21 @@
 
       .container {
           display: flex;
-          width: 90%;
-          height: calc(100vh - 60px); /* ajustado se tiver navbar fixa */
+          width: 100%;
+          height: calc(100vh - 70px); 
+          padding: 10px;
+          gap: 20px;
       }
 
       #map {
-          height: 80vh;
+          flex: 3;
+          height: 90%;
           width: 50%;
-          margin-top: 70px; /* para não ficar escondido atrás da navbar */
+          margin-top: 70px; 
           border-radius: 10px;
       }
 
-      .dados {
+      /* .dados {
           
           height: 80vh;
           width: 40%;
@@ -96,66 +99,218 @@
           border-radius: 10px;
           margin-left: 150px;
           margin-top: 70px;
-      }
+      } */
+      .info-panel {
+            flex: 1;
+            height: 87%;
+            background-color: #06192E; 
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 70px;
+            overflow-y: auto; 
+        }
+        .info-panel h2 {
+            margin-top: 0;
+            color: #fff;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px; 
+        }
+        th, td {
+            border: 1px solid #ddd;
+            color: #fff;
+            padding: 8px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #01101f; 
+            color: #fff;
+            border-radius: 5px;
+        }
+        .status-disponivel { color: green; font-weight: bold; }
+        .status-patrulhamento { color: orange; font-weight: bold; }
+        .status-ocorrencia { color: red; font-weight: bold; }
 
 </style>
 <body>
-    <nav id="navbar">
-            <h1><a href="/menu" id="nav-title">P4 SECURITY</a></h1>
-            <ul>
-
-                <li><a href="/menu">Início</a></li>
-                <li><a href="/mapa">Mapa</a></li>
-                <li><a href="/dashboard">Dashboard</a></li>
-                <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
-
-            </ul>
-
-        </nav>
-    <div class="container">
-      <div id="map"></div>
-      <div class="dados">
-
+  <nav id="navbar">
+    <h1><a href="/menu" id="nav-title">P4 SECURITY</a></h1>
+    <ul>
+        <li><a href="/menu">Início</a></li>
+        <li><a href="/mapa">Mapa</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/registrarocorrencia">Registrar Ocorrência</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div id="map"></div>
+    <div class="info-panel">
+      <h2>Viaturas e Pontos Críticos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Ponto Crítico</th>
+            <th>Viatura Próxima</th>
+            <th>Status Viatura</th>
+            <th>Distância (km)</th>
+          </tr>
+          </thead>
+          <tbody id="tabela-alocacao">
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   <script>
-    function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: -15.864946240888553, lng: -48.030177931043816 },
-          zoom: 11
-        });
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: -15.864946240888553, lng: -48.030177931043816 },
+      zoom: 11 
+    });
 
-        const icons = {
-          pontoCritico: {
-            url: '{{ url_for("static", filename="images/critico.png") }}',
-            scaledSize: new google.maps.Size(30, 30)
-          },
-          viatura: {
-            url: '{{ url_for("static", filename="images/viatura.png") }}',
-            scaledSize: new google.maps.Size(35, 35)
+    const icons = {
+      pontoCritico: {
+        url: '{{ url_for("static", filename="images/critico.png") }}',
+        scaledSize: new google.maps.Size(30, 30)
+      },
+      viatura: {
+        url: '{{ url_for("static", filename="images/viatura.png") }}',
+        scaledSize: new google.maps.Size(35, 35)
+      }
+    };
+
+    const pontosCriticos = {{ pontos_criticos | tojson | safe }};
+    console.log("MAPA.HTML: 'pontosCriticos' recebidos:", JSON.stringify(pontosCriticos, null, 2));
+
+    let viaturas = [
+        { id: "VTR01", lat: -15.8500, lng: -48.0250, status: "Disponível", marker: null },
+        { id: "VTR02", lat: -15.8700, lng: -48.0400, status: "Em Patrulhamento", marker: null },
+        { id: "VTR03", lat: -15.8800, lng: -48.0150, status: "Disponível", marker: null },
+        { id: "VTR04", lat: -15.8300, lng: -48.0350, status: "Em Ocorrência", marker: null },
+        { id: "VTR05", lat: -15.8600, lng: -48.0500, status: "Disponível", marker: null }
+    ];
+    console.log("MAPA.HTML: 'viaturas' definidas:", JSON.stringify(viaturas, null, 2));
+
+
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Raio da Terra em km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            0.5 - Math.cos(dLat) / 2 +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            (1 - Math.cos(dLon)) / 2;
+        return R * 2 * Math.asin(Math.sqrt(a));
+    }
+
+    function atualizarTabela() {
+      const tbody = document.getElementById('tabela-alocacao');
+      if (!tbody) {
+          console.error("Elemento tbody com ID 'tabela-alocacao' não encontrado!");
+          return;
+      }
+      tbody.innerHTML = ''; // Limpa a tabela
+
+      if (!pontosCriticos || !Array.isArray(pontosCriticos) || pontosCriticos.length === 0) {
+          const tr = tbody.insertRow();
+          const cell = tr.insertCell();
+          cell.colSpan = 4; 
+          cell.textContent = "Nenhum ponto crítico para exibir.";
+          return;
+      }
+
+      pontosCriticos.forEach((pc, indexPc) => {
+          if (!pc || typeof pc.lat !== 'number' || typeof pc.lng !== 'number' || isNaN(pc.lat) || isNaN(pc.lng)) {
+              console.warn("Ponto crítico inválido ou com coordenadas NaN:", pc);
+              return;
           }
-        };
-        const pontosCriticos = {{ pontos_criticos | tojson | safe }};
-        console.log("MAPA.HTML: 'pontosCriticos' recebidos:", JSON.stringify(pontosCriticos, null, 2));
-        if (pontosCriticos && Array.isArray(pontosCriticos) && pontosCriticos.length > 0) {
-          pontosCriticos.forEach((pos, index) => {
-            if (pos && typeof pos.lat === 'number' && typeof pos.lng === 'number' && !isNaN(pos.lat) && !isNaN(pos.lng)) {
-              new google.maps.Marker({
-                position: { lat: pos.lat, lng: pos.lng },
-                map: map,
-                icon: icons.pontoCritico,
-                title: `Ponto Crítico ${index + 1}`,
-                zIndex: 1
-              });
-            } else {
-              console.warn("MAPA.HTML: Item inválido ou coordenada NaN em 'pontosCriticos':", pos);
-            }
+
+          let viaturaMaisProximaReal = null;
+          let menorDistanciaReal = Infinity;
+
+          viaturas.forEach(vtr => {
+              if (!vtr || typeof vtr.lat !== 'number' || typeof vtr.lng !== 'number' || isNaN(vtr.lat) || isNaN(vtr.lng)) {
+                  console.warn("Viatura inválida ou com coordenadas NaN:", vtr);
+                  return; 
+              }
+              const distancia = calcularDistancia(pc.lat, pc.lng, vtr.lat, vtr.lng);
+              if (distancia < menorDistanciaReal) {
+                  menorDistanciaReal = distancia;
+                  viaturaMaisProximaReal = vtr;
+              }
+          });
+
+          const tr = tbody.insertRow();
+          tr.insertCell().textContent = `PC ${indexPc + 1} (Lat: ${pc.lat.toFixed(4)}, Lng: ${pc.lng.toFixed(4)})`;
+
+          if (viaturaMaisProximaReal) {
+              tr.insertCell().textContent = viaturaMaisProximaReal.id;
+              const statusCell = tr.insertCell();
+              statusCell.textContent = viaturaMaisProximaReal.status;
+
+              statusCell.className = ''; 
+              if (viaturaMaisProximaReal.status === "Disponível") statusCell.classList.add('status-disponivel');
+              if (viaturaMaisProximaReal.status === "Em Patrulhamento") statusCell.classList.add('status-patrulhamento');
+              if (viaturaMaisProximaReal.status === "Em Ocorrência") statusCell.classList.add('status-ocorrencia');
+
+              tr.insertCell().textContent = menorDistanciaReal.toFixed(2);
+          } else {
+              tr.insertCell().textContent = "N/A";
+              const statusCell = tr.insertCell();
+              statusCell.textContent = "N/A";
+              tr.insertCell().textContent = "N/A";
+          }
+      });
+    } 
+
+    // Desenhar marcadores dos Pontos Críticos
+    if (pontosCriticos && Array.isArray(pontosCriticos) && pontosCriticos.length > 0) {
+      pontosCriticos.forEach((pos, index) => {
+        if (pos && typeof pos.lat === 'number' && typeof pos.lng === 'number' && !isNaN(pos.lat) && !isNaN(pos.lng)) {
+          new google.maps.Marker({
+            position: { lat: pos.lat, lng: pos.lng },
+            map: map,
+            icon: icons.pontoCritico,
+            title: `Ponto Crítico ${index + 1}\nLat: ${pos.lat.toFixed(5)}\nLng: ${pos.lng.toFixed(5)}`,
+            zIndex: 1
           });
         } else {
-          console.log("MAPA.HTML: Nenhum ponto crítico para exibir ou 'pontosCriticos' não é um array válido ou está vazio.");
+          console.warn("MAPA.HTML: Item inválido ou coordenada NaN ao criar marcador de Ponto Crítico:", pos);
         }
-      }
-  </script>
+      });
+    } else {
+      console.log("MAPA.HTML: Nenhum marcador de ponto crítico para desenhar.");
+    }
+
+    // Desenhar marcadores das Viaturas
+    if (viaturas && Array.isArray(viaturas) && viaturas.length > 0) {
+      viaturas.forEach(vtr => {
+        // if (vtr && typeof vtr.lat === 'number' && typeof vtr.lng !== 'number' && !isNaN(vtr.lat) && !isNaN(vtr.lng)) {
+        if (vtr && typeof vtr.lat === 'number' && typeof vtr.lng === 'number') { 
+          vtr.marker = new google.maps.Marker({
+            position: { lat: vtr.lat, lng: vtr.lng },
+            map: map,
+            icon: icons.viatura,
+            title: `Viatura ${vtr.id}\nStatus: ${vtr.status}\nLat: ${vtr.lat.toFixed(5)}\nLng: ${vtr.lng.toFixed(5)}`,
+            zIndex: 2 
+          });
+        } else {
+          console.warn("MAPA.HTML: Item inválido ou coordenada NaN ao criar marcador de Viatura:", vtr);
+        }
+      });
+    } else {
+      console.log("MAPA.HTML: Nenhuma viatura para desenhar.");
+    }
+    atualizarTabela();
+
+  } 
+</script>
 
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap&libraries=maps,marker&v=beta">

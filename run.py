@@ -1,5 +1,5 @@
 from app import create_app
-from routes import main_bp
+# from app.routes import main_bp
 from dotenv import load_dotenv
 
 load_dotenv("secrets.env")
